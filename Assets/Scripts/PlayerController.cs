@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveForce;
     [SerializeField] private Animator animator;
 
-
     void Update()
     {
         rigidbody.velocity = new Vector3(joystick.Horizontal * moveForce, rigidbody.velocity.y, joystick.Vertical * moveForce);
