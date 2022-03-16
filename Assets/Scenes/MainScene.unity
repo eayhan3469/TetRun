@@ -949,6 +949,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7078980295860944404, guid: 668accd25663d9b4c93e0af9910d7bad, type: 3}
+      propertyPath: stackLimit
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7078980295860944404, guid: 668accd25663d9b4c93e0af9910d7bad, type: 3}
       propertyPath: clampValueX
       value: 20
       objectReference: {fileID: 0}
@@ -956,5 +960,9 @@ PrefabInstance:
       propertyPath: clampValueZ
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 7078980295860944404, guid: 668accd25663d9b4c93e0af9910d7bad, type: 3}
+      propertyPath: stackTransform
+      value: 
+      objectReference: {fileID: 1406049139}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 668accd25663d9b4c93e0af9910d7bad, type: 3}

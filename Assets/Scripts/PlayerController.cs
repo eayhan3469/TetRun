@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,14 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody rigidbody;
     [SerializeField] private FloatingJoystick joystick;
-    [SerializeField] private float moveForce;
+    [SerializeField] private Transform stackTransform;
     [SerializeField] private Animator animator;
+    [SerializeField] private int stackLimit;
+    [SerializeField] private float moveForce;
     [SerializeField] private float clampValueX;
     [SerializeField] private float clampValueZ;
+
+    private List<TetrisPiece> collectedPieces = new List<TetrisPiece>();
 
     void Update()
     {
@@ -33,8 +38,25 @@ public class PlayerController : MonoBehaviour
         ClampPosition();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("TetrisPiece"))
+        {
+            if (collectedPieces.Count >= stackLimit)
+                return;
+
+            var tetrisPiece = other.GetComponent<TetrisPiece>();
+            collectedPieces.Add(tetrisPiece);
+            GameManager.Instance.SpawnedPieces.Remove(tetrisPiece);
+
+            other.transform.parent = stackTransform;
+            other.transform.DOLocalJump(Vector3.up * (collectedPieces.Count - 1), 2f, 1, 0.75f);
+            other.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(-90f, 0f, 0f)), 0.5f);
+        }
+    }
+
     private void ClampPosition()
     {
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, Mathf.Clamp(transform.position.z, -clampValueZ, clampValueZ)); 
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, Mathf.Clamp(transform.position.z, -clampValueZ, clampValueZ));
     }
 }
