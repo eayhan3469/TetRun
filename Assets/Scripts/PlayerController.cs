@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private FloatingJoystick joystick;
     [SerializeField] private float moveForce;
     [SerializeField] private Animator animator;
+    [SerializeField] private float clampValueX;
+    [SerializeField] private float clampValueZ;
 
     void Update()
     {
@@ -27,5 +29,12 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("run", false);
         }
+
+        ClampPosition();
+    }
+
+    private void ClampPosition()
+    {
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, Mathf.Clamp(transform.position.z, -clampValueZ, clampValueZ)); 
     }
 }
