@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private Rigidbody rigidBody;
     [SerializeField] private FloatingJoystick joystick;
     [SerializeField] private Transform stackTransform;
     [SerializeField] private Animator animator;
@@ -20,32 +20,55 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        rigidbody.velocity = new Vector3(joystick.Horizontal * moveForce, rigidbody.velocity.y, joystick.Vertical * moveForce);
-
-        if (rigidbody.velocity.magnitude > 0.5f)
+        if (joystick != null)
         {
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z)),
-                Time.deltaTime * 100f
-            );
+            var ang = Mathf.Atan2(joystick.Horizontal, joystick.Vertical);
 
-            animator.SetBool("run", true);
-        }
-        else
-        {
-            animator.SetBool("run", false);
-        }
+            if (ang < 0)
+                ang += Mathf.PI * 2f;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(transform.forward + (Vector3.up * 2f)), out hit, 5f))
-        {
-            if (hit.transform.CompareTag("TetrisPiecePlace"))
+            ang += Mathf.PI / 6f;
+
+            var axisX = Mathf.Cos(ang);
+            var axisY = Mathf.Sin(ang);
+
+            if (joystick.Horizontal != 0 || joystick.Vertical != 0)
             {
-                PlacePiece(hit.transform.GetComponent<TetrisPiecePlace>());
+                rigidBody.velocity = new Vector3(axisY * moveForce, rigidBody.velocity.y, axisX * moveForce);
+
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    Quaternion.LookRotation(new Vector3(rigidBody.velocity.x, 0f, rigidBody.velocity.z)),
+                    Time.deltaTime * 100f
+                );
+
+                animator.SetBool("run", true);
             }
+            else
+            {
+                rigidBody.velocity = Vector3.zero;
+            }
+
+            animator.SetBool("run", rigidBody.velocity.magnitude > 0.2f);
         }
 
         ClampPosition();
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bridge"))
+        {
+            if (Physics.Raycast(transform.position + (Vector3.up * 2), transform.TransformDirection(transform.forward * 100f), out hit, Mathf.Infinity))
+            {
+                if (hit.transform.CompareTag("TetrisPiecePlace"))
+                {
+                    PlacePiece(hit.transform.GetComponent<TetrisPiecePlace>());
+                }
+            }
+
+            Debug.DrawRay(transform.position + (Vector3.up * 2), transform.TransformDirection(transform.forward * 100f));
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,7 +78,16 @@ public class PlayerController : MonoBehaviour
             var tetrisPiece = other.GetComponent<TetrisPiece>();
 
             if (collectedPieces.Count >= stackLimit)
-                RemovePieceFromStack(collectedPieces[0]);
+            {
+                var removedPiece = collectedPieces[0];
+                collectedPieces.Remove(removedPiece);
+
+                removedPiece.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
+                {
+                    Destroy(removedPiece);
+                    ReorderCollectedPieces();
+                });
+            }
 
             if (!tetrisPiece.IsCollect)
             {
@@ -75,13 +107,11 @@ public class PlayerController : MonoBehaviour
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, Mathf.Clamp(transform.position.z, -clampValueZ, clampValueZ));
     }
 
-    private void RemovePieceFromStack(TetrisPiece piece)
+    private void ReorderCollectedPieces()
     {
-        collectedPieces.Remove(piece);
-
         foreach (var p in collectedPieces)
         {
-            piece.transform.DOLocalMoveY(collectedPieces.IndexOf(p), 0.5f);
+            p.transform.DOLocalMoveY(collectedPieces.IndexOf(p), 0.5f);
         }
     }
 
@@ -93,7 +123,8 @@ public class PlayerController : MonoBehaviour
             return;
 
         place.IsPlaced = true;
-        RemovePieceFromStack(piece);
+        collectedPieces.Remove(piece);
+        ReorderCollectedPieces();
         piece.transform.parent = place.PiecePlacePoint;
         piece.transform.DOLocalMove(Vector3.zero, 0.5f);
         piece.transform.DOLocalRotate(Vector3.zero, 0.5f).OnComplete(() => place.Destroy());

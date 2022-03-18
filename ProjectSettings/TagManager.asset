@@ -6,6 +6,7 @@ TagManager:
   tags:
   - TetrisPiece
   - TetrisPiecePlace
+  - Bridge
   layers:
   - Default
   - TransparentFX
