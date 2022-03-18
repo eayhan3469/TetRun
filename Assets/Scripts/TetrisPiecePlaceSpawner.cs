@@ -13,7 +13,7 @@ public class TetrisPiecePlaceSpawner : MonoBehaviour
             var selectedPiecePlace = tetrisPiecePlaces[Random.Range(0, tetrisPiecePlaces.Count)];
             var piecePlace = Instantiate(selectedPiecePlace).GetComponent<TetrisPiecePlace>();
             piecePlace.transform.parent = transform;
-            piecePlace.transform.localPosition = new Vector3(0f, 1f, 1f * GameManager.Instance.SpawnedPiecePlaces.Count); ;
+            piecePlace.transform.localPosition = new Vector3(0f, 1f, (1f * GameManager.Instance.SpawnedPiecePlaces.Count) + 5f);
             GameManager.Instance.SpawnedPiecePlaces.Add(piecePlace);
         }
     }

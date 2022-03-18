@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1587675011866970163}
   - component: {fileID: 7532309579583869591}
   m_Layer: 0
-  m_Name: TetrisPiece - 2
+  m_Name: TetrisPiece - Z
   m_TagString: TetrisPiece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

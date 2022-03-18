@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float clampValueZ;
 
     private List<TetrisPiece> collectedPieces = new List<TetrisPiece>();
+    private RaycastHit hit;
 
     void Update()
     {
@@ -36,6 +37,14 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("run", false);
         }
 
+        if (Physics.Raycast(transform.position, transform.TransformDirection(transform.forward + (Vector3.up * 2f)), out hit, 5f))
+        {
+            if (hit.transform.CompareTag("TetrisPiecePlace"))
+            {
+                PlacePiece(hit.transform.GetComponent<TetrisPiecePlace>());
+            }
+        }
+
         ClampPosition();
     }
 
@@ -43,21 +52,21 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("TetrisPiece"))
         {
-            if (collectedPieces.Count >= stackLimit)
-                return;
-
             var tetrisPiece = other.GetComponent<TetrisPiece>();
-            collectedPieces.Add(tetrisPiece);
-            GameManager.Instance.SpawnedPieces.Remove(tetrisPiece);
 
-            other.transform.parent = stackTransform;
-            other.transform.DOLocalJump(Vector3.up * (collectedPieces.Count - 1), 2f, 1, 0.75f);
-            other.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(-90f, 0f, 0f)), 0.5f);
-        }
+            if (collectedPieces.Count >= stackLimit)
+                RemovePieceFromStack(collectedPieces[0]);
 
-        if (other.CompareTag("TetrisPiecePlace"))
-        {
-            PlacePiece(other.GetComponent<TetrisPiecePlace>());
+            if (!tetrisPiece.IsCollect)
+            {
+                tetrisPiece.IsCollect = true;
+                collectedPieces.Add(tetrisPiece);
+                GameManager.Instance.SpawnedPieces.Remove(tetrisPiece);
+
+                other.transform.parent = stackTransform;
+                other.transform.DOLocalJump(Vector3.up * (collectedPieces.Count - 1), 2f, 1, 0.75f);
+                other.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(-90f, 0f, 0f)), 0.5f);
+            }
         }
     }
 
@@ -66,11 +75,27 @@ public class PlayerController : MonoBehaviour
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, Mathf.Clamp(transform.position.z, -clampValueZ, clampValueZ));
     }
 
+    private void RemovePieceFromStack(TetrisPiece piece)
+    {
+        collectedPieces.Remove(piece);
+
+        foreach (var p in collectedPieces)
+        {
+            piece.transform.DOLocalMoveY(collectedPieces.IndexOf(p), 0.5f);
+        }
+    }
+
     private void PlacePiece(TetrisPiecePlace place)
     {
         var piece = collectedPieces.Where(p => p.PieceType == place.PieceType).FirstOrDefault();
-        collectedPieces.Remove(piece);
-        Destroy(piece.gameObject);
-        Destroy(place.gameObject);
+
+        if (piece == null || place.IsPlaced)
+            return;
+
+        place.IsPlaced = true;
+        RemovePieceFromStack(piece);
+        piece.transform.parent = place.PiecePlacePoint;
+        piece.transform.DOLocalMove(Vector3.zero, 0.5f);
+        piece.transform.DOLocalRotate(Vector3.zero, 0.5f).OnComplete(() => place.Destroy());
     }
 }
