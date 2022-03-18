@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - TetrisPiece
+  - TetrisPiecePlace
   layers:
   - Default
   - TransparentFX

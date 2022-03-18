@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -53,10 +54,23 @@ public class PlayerController : MonoBehaviour
             other.transform.DOLocalJump(Vector3.up * (collectedPieces.Count - 1), 2f, 1, 0.75f);
             other.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(-90f, 0f, 0f)), 0.5f);
         }
+
+        if (other.CompareTag("TetrisPiecePlace"))
+        {
+            PlacePiece(other.GetComponent<TetrisPiecePlace>());
+        }
     }
 
     private void ClampPosition()
     {
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, Mathf.Clamp(transform.position.z, -clampValueZ, clampValueZ));
+    }
+
+    private void PlacePiece(TetrisPiecePlace place)
+    {
+        var piece = collectedPieces.Where(p => p.PieceType == place.PieceType).FirstOrDefault();
+        collectedPieces.Remove(piece);
+        Destroy(piece.gameObject);
+        Destroy(place.gameObject);
     }
 }
