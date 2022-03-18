@@ -127,6 +127,10 @@ public class PlayerController : MonoBehaviour
         ReorderCollectedPieces();
         piece.transform.parent = place.PiecePlacePoint;
         piece.transform.DOLocalMove(Vector3.zero, 0.5f);
-        piece.transform.DOLocalRotate(Vector3.zero, 0.5f).OnComplete(() => place.Destroy());
+        piece.transform.DOLocalRotate(Vector3.zero, 0.5f).OnComplete(() =>
+        {
+            place.Destroy();
+
+        });
     }
 }
