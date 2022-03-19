@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public List<TetrisPiece> SpawnedPieces { get; set; }
-    public List<TetrisPiecePlace> SpawnedPiecePlaces { get; set; }
+    public List<TetrisPiecePlace> PlayersPiecePlaces { get; set; }
+    public List<TetrisPiecePlace> RivalPiecePlaces { get; set; }
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
             Destroy(Instance);
 
         SpawnedPieces = new List<TetrisPiece>();
-        SpawnedPiecePlaces = new List<TetrisPiecePlace>();
+        PlayersPiecePlaces = new List<TetrisPiecePlace>();
+        RivalPiecePlaces = new List<TetrisPiecePlace>();
     }
 }

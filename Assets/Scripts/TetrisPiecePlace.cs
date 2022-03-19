@@ -18,6 +18,7 @@ public class TetrisPiecePlace : MonoBehaviour
     [SerializeField] private Transform cubesParent;
 
     public bool IsPlaced { get; set; }
+    public bool HasPlayer { get; set; }
 
     public void Destroy()
     {
@@ -39,10 +40,10 @@ public class TetrisPiecePlace : MonoBehaviour
         DOVirtual.DelayedCall(0.75f, () =>
         {
             gameObject.SetActive(false);
-            GameManager.Instance.SpawnedPiecePlaces.Remove(this);
+            GameManager.Instance.PlayersPiecePlaces.Remove(this);
 
-            if (GameManager.Instance.SpawnedPiecePlaces.Count > 0)
-                GameManager.Instance.SpawnedPiecePlaces[0].PiecePlaceHolder.SetActive(true);
+            if (GameManager.Instance.PlayersPiecePlaces.Count > 0)
+                GameManager.Instance.PlayersPiecePlaces[0].PiecePlaceHolder.SetActive(true);
         });
     }
 }

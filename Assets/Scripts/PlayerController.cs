@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
     {
         var piece = collectedPieces.Where(p => p.PieceType == place.PieceType).FirstOrDefault();
 
-        if (piece == null || place.IsPlaced)
+        if (piece == null || place.IsPlaced || !place.HasPlayer)
             return;
 
         place.IsPlaced = true;
