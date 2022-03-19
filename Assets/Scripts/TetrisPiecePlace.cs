@@ -37,13 +37,29 @@ public class TetrisPiecePlace : MonoBehaviour
             cube.DOScale(0f, 0.5f).SetEase(Ease.OutBounce);
         }
 
-        DOVirtual.DelayedCall(0.75f, () =>
+        if (HasPlayer)
         {
-            gameObject.SetActive(false);
-            GameManager.Instance.PlayersPiecePlaces.Remove(this);
+            if (GameManager.Instance.PlayersPiecePlaces.Count > 1)
+                GameManager.Instance.PlayersPiecePlaces[1].PiecePlaceHolder.SetActive(true);
 
-            if (GameManager.Instance.PlayersPiecePlaces.Count > 0)
-                GameManager.Instance.PlayersPiecePlaces[0].PiecePlaceHolder.SetActive(true);
-        });
+            DOVirtual.DelayedCall(0.75f, () =>
+            {
+                gameObject.SetActive(false);
+                GameManager.Instance.PlayersPiecePlaces.Remove(this);
+
+            });
+        }
+        else
+        {
+            if (GameManager.Instance.RivalPiecePlaces.Count > 1)
+                GameManager.Instance.RivalPiecePlaces[1].PiecePlaceHolder.SetActive(true);
+
+            DOVirtual.DelayedCall(0.75f, () =>
+            {
+                gameObject.SetActive(false);
+                GameManager.Instance.RivalPiecePlaces.Remove(this);
+            });
+        }
+
     }
 }

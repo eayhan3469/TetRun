@@ -813,6 +813,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1181943965 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6343070460498020, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+  m_PrefabInstance: {fileID: 6343071505996025}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1241349011
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,10 +1615,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rival
       objectReference: {fileID: 0}
+    - target: {fileID: 1228061002400230409, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: m_TagString
+      value: Rival
+      objectReference: {fileID: 0}
     - target: {fileID: 1232994558971032817, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
       propertyPath: agent
       value: 
       objectReference: {fileID: 1232994558971032818}
+    - target: {fileID: 1232994558971032817, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232994558971032817, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 5317942046218480537}
+    - target: {fileID: 1232994558971032817, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: stackLimit
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232994558971032817, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: stackTransform
+      value: 
+      objectReference: {fileID: 1181943965}
+    - target: {fileID: 1232994558971032818, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: m_AutoBraking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232994558971032818, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: m_Acceleration
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232994558971032818, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 360
+      objectReference: {fileID: 0}
     - target: {fileID: 2833233800107236890, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1662,6 +1699,18 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6f73112b397c5934f961e523457a9af0, type: 2}
+    - target: {fileID: 7073782754505930236, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: m_Height
+      value: 4.887007
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073782754505930236, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: m_Center.y
+      value: 2.3286712
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073782754505930236, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
 --- !u!195 &1232994558971032818 stripped
@@ -1673,6 +1722,11 @@ NavMeshAgent:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2830270319487243533, guid: 668accd25663d9b4c93e0af9910d7bad, type: 3}
   m_PrefabInstance: {fileID: 7078980295191406699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5317942046218480537 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5322033068504068960, guid: 78faa38e33c2a6140a175ab125eddeaf, type: 3}
+  m_PrefabInstance: {fileID: 6343071505996025}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7078980295191406699
 PrefabInstance:

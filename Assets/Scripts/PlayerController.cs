@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bridge"))
+        if (collision.gameObject.CompareTag("Bridge") && GameManager.Instance.PlayersPiecePlaces.Count > 0)
             PlacePiece(GameManager.Instance.PlayersPiecePlaces[0]);
     }
 
