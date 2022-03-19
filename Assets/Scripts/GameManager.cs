@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,20 @@ public class GameManager : MonoBehaviour
     public List<TetrisPiece> SpawnedPieces { get; set; }
     public List<TetrisPiecePlace> PlayersPiecePlaces { get; set; }
     public List<TetrisPiecePlace> RivalPiecePlaces { get; set; }
+
+    public GameState State { get; set; }
+
+    public enum GameState
+    {
+        Playing,
+        Win,
+        Lose
+    }
+
+    public event UnityAction OnGameWin;
+    public event UnityAction OnGameLose;
+
+    private bool isGameActive = true;
 
     private void Awake()
     {
@@ -20,5 +35,31 @@ public class GameManager : MonoBehaviour
         SpawnedPieces = new List<TetrisPiece>();
         PlayersPiecePlaces = new List<TetrisPiecePlace>();
         RivalPiecePlaces = new List<TetrisPiecePlace>();
+    }
+
+    private void Update()
+    {
+        if (isGameActive)
+        {
+            switch (State)
+            {
+                case GameState.Playing:
+                    break;
+                case GameState.Win:
+                    {
+                        OnGameWin?.Invoke();
+                        isGameActive = false;
+                    }
+                    break;
+                case GameState.Lose:
+                    {
+                        OnGameLose?.Invoke();
+                        isGameActive = false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

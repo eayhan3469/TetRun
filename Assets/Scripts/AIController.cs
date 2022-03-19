@@ -10,6 +10,7 @@ public class AIController : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform stackTransform;
     [SerializeField] private Transform ejectTransform;
+    [SerializeField] private Transform finishTransform;
     [SerializeField] private Animator animator;
     [SerializeField] private int stackLimit;
     [SerializeField] private float speed;
@@ -17,7 +18,16 @@ public class AIController : MonoBehaviour
     private List<TetrisPiece> collectedPieces = new List<TetrisPiece>();
     private bool hasArrive = true;
     private bool ejecting = false;
-    private float ejectWaitTime = 3f;
+    private bool finishing = false;
+    private float ejectWaitTime = 1.5f;
+    private State currentState;
+
+    private enum State
+    {
+        Collecting,
+        Ejecting,
+        Finishing
+    }
 
     private void Start()
     {
@@ -26,17 +36,17 @@ public class AIController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.SpawnedPieces.Count > 0 && hasArrive && !ejecting)
+        if (GameManager.Instance.SpawnedPieces.Count > 0 && hasArrive && currentState == State.Collecting && GameManager.Instance.RivalPiecePlaces.Count > 0)
         {
             agent.destination = GetNearestPieceTarget();
             hasArrive = false;
         }
 
-        if (agent.remainingDistance < 1f)
+        if (agent.remainingDistance < 2f)
         {
             hasArrive = true;
 
-            if (ejecting)
+            if (currentState == State.Ejecting)
             {
                 ejectWaitTime -= Time.deltaTime;
                 agent.isStopped = true;
@@ -44,10 +54,17 @@ public class AIController : MonoBehaviour
 
             if (ejectWaitTime <= 0f)
             {
-                ejecting = false;
+                currentState = State.Collecting;
                 agent.isStopped = false;
-                ejectWaitTime = 3f;
+                ejectWaitTime = collectedPieces.Count > 5 ? 3f : 1.5f;
             }
+        }
+
+        if (GameManager.Instance.RivalPiecePlaces.Count == 0 && currentState != State.Finishing)
+        {
+            agent.destination = finishTransform.position;
+            agent.isStopped = false;
+            currentState = State.Finishing;
         }
 
         animator.SetBool("run", agent.velocity.magnitude > 0.5f);
@@ -80,7 +97,7 @@ public class AIController : MonoBehaviour
                 if (tetrisPiece.PieceType == GameManager.Instance.RivalPiecePlaces[0].PieceType)
                 {
                     agent.destination = ejectTransform.position;
-                    ejecting = true;
+                    currentState = State.Ejecting;
                 }
 
                 other.transform.parent = stackTransform;
@@ -88,11 +105,14 @@ public class AIController : MonoBehaviour
                 other.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(-90f, 0f, 0f)), 0.5f);
             }
         }
+
+        if (other.CompareTag("Finish"))
+            GameManager.Instance.State = GameManager.GameState.Lose;
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bridge"))
+        if (collision.gameObject.CompareTag("Bridge") && GameManager.Instance.RivalPiecePlaces.Count > 0)
             PlacePiece(GameManager.Instance.RivalPiecePlaces[0]);
     }
 
@@ -135,7 +155,6 @@ public class AIController : MonoBehaviour
         piece.transform.DOLocalRotate(Vector3.zero, 0.5f).OnComplete(() =>
         {
             place.Destroy();
-
         });
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -90,6 +91,9 @@ public class PlayerController : MonoBehaviour
                 other.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(-90f, 0f, 0f)), 0.5f);
             }
         }
+
+        if (other.CompareTag("Finish"))
+            GameManager.Instance.State = GameManager.GameState.Win;
     }
 
     private void ClampPosition()
@@ -118,7 +122,6 @@ public class PlayerController : MonoBehaviour
         piece.transform.DOLocalRotate(Vector3.zero, 0.5f).OnComplete(() =>
         {
             place.Destroy();
-
         });
     }
 }
