@@ -1,11 +1,16 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject losePanel;
 
     private void Awake()
     {
@@ -23,11 +28,17 @@ public class UIManager : MonoBehaviour
 
     private void OnGameWin()
     {
-        Debug.Log("Game win ui");
+        winPanel.SetActive(true);
     }
 
     private void OnGameLose()
     {
-        Debug.Log("Game lose ui");
+        losePanel.SetActive(true);
+    }
+
+    public void OnRestartClicked()
+    {
+        DOTween.KillAll();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

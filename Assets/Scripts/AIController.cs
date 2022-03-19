@@ -32,6 +32,8 @@ public class AIController : MonoBehaviour
     private void Start()
     {
         agent.speed = speed;
+        GameManager.Instance.OnGameLose += OnGameFinished;
+        GameManager.Instance.OnGameWin += OnGameFinished;
     }
 
     void Update()
@@ -94,7 +96,7 @@ public class AIController : MonoBehaviour
                 collectedPieces.Add(tetrisPiece);
                 GameManager.Instance.SpawnedPieces.Remove(tetrisPiece);
 
-                if (tetrisPiece.PieceType == GameManager.Instance.RivalPiecePlaces[0].PieceType)
+                if (GameManager.Instance.RivalPiecePlaces.Count > 0 && tetrisPiece.PieceType == GameManager.Instance.RivalPiecePlaces[0].PieceType)
                 {
                     agent.destination = ejectTransform.position;
                     currentState = State.Ejecting;
@@ -156,5 +158,10 @@ public class AIController : MonoBehaviour
         {
             place.Destroy();
         });
+    }
+
+    private void OnGameFinished()
+    {
+        agent.speed = 0;
     }
 }

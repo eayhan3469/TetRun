@@ -14,10 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int stackLimit;
     [SerializeField] private float moveForce;
     [SerializeField] private float clampValueX;
-    [SerializeField] private float clampValueZ;
 
     private List<TetrisPiece> collectedPieces = new List<TetrisPiece>();
-    private RaycastHit hit;
 
     void Update()
     {
@@ -98,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
     private void ClampPosition()
     {
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, Mathf.Clamp(transform.position.z, -clampValueZ, clampValueZ));
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampValueX, clampValueX), transform.position.y, transform.position.z);
     }
 
     private void ReorderCollectedPieces()
