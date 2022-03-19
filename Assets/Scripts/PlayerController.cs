@@ -58,17 +58,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bridge"))
-        {
-            if (Physics.Raycast(transform.position + (Vector3.up * 2), transform.TransformDirection(transform.forward * 100f), out hit, Mathf.Infinity))
-            {
-                if (hit.transform.CompareTag("TetrisPiecePlace"))
-                {
-                    PlacePiece(hit.transform.GetComponent<TetrisPiecePlace>());
-                }
-            }
-
-            Debug.DrawRay(transform.position + (Vector3.up * 2), transform.TransformDirection(transform.forward * 100f));
-        }
+            PlacePiece(GameManager.Instance.PlayersPiecePlaces[0]);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -110,9 +100,7 @@ public class PlayerController : MonoBehaviour
     private void ReorderCollectedPieces()
     {
         foreach (var p in collectedPieces)
-        {
             p.transform.DOLocalMoveY(collectedPieces.IndexOf(p), 0.5f);
-        }
     }
 
     private void PlacePiece(TetrisPiecePlace place)
