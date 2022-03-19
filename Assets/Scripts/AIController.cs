@@ -9,13 +9,15 @@ public class AIController : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform stackTransform;
+    [SerializeField] private Transform ejectTransform;
     [SerializeField] private Animator animator;
     [SerializeField] private int stackLimit;
     [SerializeField] private float speed;
 
     private List<TetrisPiece> collectedPieces = new List<TetrisPiece>();
     private bool hasArrive = true;
-    private bool isGoingEject = false;
+    private bool ejecting = false;
+    private float ejectWaitTime = 3f;
 
     private void Start()
     {
@@ -24,16 +26,28 @@ public class AIController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.SpawnedPieces.Count > 0 && hasArrive)
+        if (GameManager.Instance.SpawnedPieces.Count > 0 && hasArrive && !ejecting)
         {
-            agent.destination = GetRandomPieceTarget();
+            agent.destination = GetNearestPieceTarget();
             hasArrive = false;
         }
 
         if (agent.remainingDistance < 1f)
         {
             hasArrive = true;
-            isGoingEject = false;
+
+            if (ejecting)
+            {
+                ejectWaitTime -= Time.deltaTime;
+                agent.isStopped = true;
+            }
+
+            if (ejectWaitTime <= 0f)
+            {
+                ejecting = false;
+                agent.isStopped = false;
+                ejectWaitTime = 3f;
+            }
         }
 
         animator.SetBool("run", agent.velocity.magnitude > 0.5f);
@@ -65,8 +79,8 @@ public class AIController : MonoBehaviour
 
                 if (tetrisPiece.PieceType == GameManager.Instance.RivalPiecePlaces[0].PieceType)
                 {
-                    agent.destination = GameManager.Instance.RivalPiecePlaces[0].transform.position;
-                    isGoingEject = true;
+                    agent.destination = ejectTransform.position;
+                    ejecting = true;
                 }
 
                 other.transform.parent = stackTransform;
@@ -82,9 +96,22 @@ public class AIController : MonoBehaviour
             PlacePiece(GameManager.Instance.RivalPiecePlaces[0]);
     }
 
-    private Vector3 GetRandomPieceTarget()
+    private Vector3 GetNearestPieceTarget()
     {
-        return GameManager.Instance.SpawnedPieces[Random.Range(0, GameManager.Instance.SpawnedPieces.Count)].transform.position;
+        var distance = 5000f;
+        Vector3 nearestTargetPos = Vector3.zero;
+        var firstPiecePlace = GameManager.Instance.RivalPiecePlaces[0];
+
+        foreach (var piece in GameManager.Instance.SpawnedPieces)
+        {
+            if (piece.PieceType == firstPiecePlace.PieceType && Vector3.Distance(transform.position, firstPiecePlace.transform.position) < distance)
+                nearestTargetPos = piece.transform.position;
+        }
+
+        if (nearestTargetPos == Vector3.zero)
+            return GameManager.Instance.SpawnedPieces[Random.Range(0, GameManager.Instance.SpawnedPieces.Count)].transform.position;
+        else
+            return nearestTargetPos;
     }
 
     private void ReorderCollectedPieces()
