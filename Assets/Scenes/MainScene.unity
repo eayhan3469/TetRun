@@ -2063,7 +2063,7 @@ MonoBehaviour:
   - {fileID: 8851410204636381543, guid: a6a46ef19d5c8954d8e7c14f7e0b0292, type: 3}
   - {fileID: 8851410204636381543, guid: 3beb634fbde274c44b8fecc5eaaa3ee2, type: 3}
   - {fileID: 8851410204636381543, guid: a500d865bfad4904eb8cc1188ef8ae03, type: 3}
-  count: 5
+  count: 15
   type: 1
 --- !u!1001 &1691873457
 PrefabInstance:
@@ -2578,7 +2578,7 @@ MonoBehaviour:
   - {fileID: 8851410204636381543, guid: a6a46ef19d5c8954d8e7c14f7e0b0292, type: 3}
   - {fileID: 8851410204636381543, guid: 3beb634fbde274c44b8fecc5eaaa3ee2, type: 3}
   - {fileID: 8851410204636381543, guid: a500d865bfad4904eb8cc1188ef8ae03, type: 3}
-  count: 5
+  count: 15
   type: 0
 --- !u!1 &1946017789
 GameObject:
