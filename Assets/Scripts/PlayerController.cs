@@ -113,11 +113,12 @@ public class PlayerController : MonoBehaviour
             return;
 
         place.IsPlaced = true;
+        place.Collider.enabled = false;
         collectedPieces.Remove(piece);
         ReorderCollectedPieces();
         piece.transform.parent = place.PiecePlacePoint;
-        piece.transform.DOLocalMove(Vector3.zero, 0.5f);
-        piece.transform.DOLocalRotate(Vector3.zero, 0.5f).OnComplete(() =>
+        piece.transform.DOLocalMove(Vector3.zero, 0.25f);
+        piece.transform.DOLocalRotate(Vector3.zero, 0.25f).OnComplete(() =>
         {
             place.Destroy();
         });

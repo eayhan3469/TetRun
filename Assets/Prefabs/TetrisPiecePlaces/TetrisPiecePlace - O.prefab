@@ -136,6 +136,7 @@ MonoBehaviour:
   pieceType: 2
   piecePlacePoint: {fileID: 2703150331381585548}
   piecePlaceHolder: {fileID: 8391811541914181830}
+  collider: {fileID: 3141518797769595617}
   colorReferenceMat: {fileID: 2100000, guid: 5af943aa4c47e6d408c5faaf86dd39e7, type: 2}
   cubesParent: {fileID: 6343290468194941484}
 --- !u!65 &3141518797769595617

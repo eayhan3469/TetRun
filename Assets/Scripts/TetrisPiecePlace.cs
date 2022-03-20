@@ -14,6 +14,9 @@ public class TetrisPiecePlace : MonoBehaviour
     [SerializeField] private GameObject piecePlaceHolder;
     public GameObject PiecePlaceHolder => piecePlaceHolder;
 
+    [SerializeField] private BoxCollider collider;
+    public BoxCollider Collider => collider;
+
     [SerializeField] private Material colorReferenceMat;
     [SerializeField] private Transform cubesParent;
 

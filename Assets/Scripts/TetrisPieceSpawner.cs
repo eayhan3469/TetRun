@@ -19,7 +19,7 @@ public class TetrisPieceSpawner : MonoBehaviour
         minPos = new Vector2(spawnArea.bounds.min.x, spawnArea.bounds.min.z);
         maxPos = new Vector2(spawnArea.bounds.max.x, spawnArea.bounds.max.z);
 
-        DOVirtual.DelayedCall(0.5f, () =>
+        DOVirtual.DelayedCall(0.25f, () =>
         {
             var selectedPiece = tetrisPieces[Random.Range(0, tetrisPieces.Count)];
 
@@ -29,7 +29,7 @@ public class TetrisPieceSpawner : MonoBehaviour
                 if (Vector3.Distance(spawnPos, piece.transform.position) < 3f)
                     return;
 
-            var spawnedPiece = Instantiate(selectedPiece, spawnPos, Quaternion.Euler(new Vector3(90f, 0f, 0f)), null).GetComponent<TetrisPiece>();
+            var spawnedPiece = Instantiate(selectedPiece, spawnPos, Quaternion.Euler(new Vector3(90f, 0f, 0f)), transform).GetComponent<TetrisPiece>();
             GameManager.Instance.SpawnedPieces.Add(spawnedPiece);
 
             spawnedPiece.transform.DOScale(1.2f, 0.25f).SetEase(Ease.InOutCubic).OnComplete(() => spawnedPiece.transform.DOScale(1f, 0.25f).SetEase(Ease.OutBack));
