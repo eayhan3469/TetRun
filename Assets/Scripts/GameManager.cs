@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
+        Idle,
         Playing,
         Win,
         Lose
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         SpawnedPieces = new List<TetrisPiece>();
         PlayersPiecePlaces = new List<TetrisPiecePlace>();
         RivalPiecePlaces = new List<TetrisPiecePlace>();
+        State = GameState.Idle;
     }
 
     private void Update()

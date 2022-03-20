@@ -38,6 +38,12 @@ public class AIController : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.State == GameManager.GameState.Playing)
+            Move();
+    }
+
+    private void Move()
+    {
         if (GameManager.Instance.SpawnedPieces.Count > 0 && hasArrive && currentState == State.Collecting && GameManager.Instance.RivalPiecePlaces.Count > 0)
         {
             agent.destination = GetNearestPieceTarget();

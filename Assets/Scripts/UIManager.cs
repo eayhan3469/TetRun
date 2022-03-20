@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
 
@@ -40,5 +41,11 @@ public class UIManager : MonoBehaviour
     {
         DOTween.KillAll();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OnPlayClicked()
+    {
+        GameManager.Instance.State = GameManager.GameState.Playing;
+        mainPanel.SetActive(false);
     }
 }
