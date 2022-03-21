@@ -120,7 +120,7 @@ public class AIController : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bridge") && GameManager.Instance.RivalPiecePlaces.Count > 0)
+        if (collision.gameObject.CompareTag("RivalBridge") && GameManager.Instance.RivalPiecePlaces.Count > 0)
             PlacePiece(GameManager.Instance.RivalPiecePlaces[0]);
     }
 

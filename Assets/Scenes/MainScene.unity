@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 348067349}
   m_Layer: 0
   m_Name: BridgeModel
-  m_TagString: Bridge
+  m_TagString: RivalBridge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1641,7 +1641,7 @@ GameObject:
   - component: {fileID: 1177139460}
   m_Layer: 0
   m_Name: BridgeModel
-  m_TagString: Bridge
+  m_TagString: PlayerBridge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

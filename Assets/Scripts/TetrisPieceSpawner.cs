@@ -16,8 +16,8 @@ public class TetrisPieceSpawner : MonoBehaviour
 
     private void Start()
     {
-        minPos = new Vector2(spawnArea.bounds.min.x, spawnArea.bounds.min.z);
-        maxPos = new Vector2(spawnArea.bounds.max.x, spawnArea.bounds.max.z);
+        minPos = new Vector2(spawnArea.bounds.min.x + 2f, spawnArea.bounds.min.z + 2f);
+        maxPos = new Vector2(spawnArea.bounds.max.x - 2f, spawnArea.bounds.max.z - 2f);
 
         DOVirtual.DelayedCall(0.25f, () =>
         {

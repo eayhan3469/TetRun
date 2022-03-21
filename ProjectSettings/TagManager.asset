@@ -8,6 +8,8 @@ TagManager:
   - TetrisPiecePlace
   - Bridge
   - Rival
+  - PlayerBridge
+  - RivalBridge
   layers:
   - Default
   - TransparentFX
